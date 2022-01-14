@@ -31,10 +31,12 @@ app.post("/api/books", (req, res, next) => {
         author: req.body.author,
         description: req.body.description
     });
-    book.save();
-    res.status(201).json({
-        message: 'Book created. All OK'
-    })
+    book.save().then(resultBook => {
+        res.status(201).json({
+            message: 'Book created. All OK',
+            bookId: resultBook._id
+        })
+    });
 });
 
 app.get("/api/books", (req, res, next) => {
@@ -47,6 +49,19 @@ app.get("/api/books", (req, res, next) => {
     });
     
 });
+
+app.delete("/api/books/:id", (req, res, next) => {
+    Book.deleteOne({
+        _id: req.params.id
+    })
+    .then(result => {
+        console.log(result);
+        res.status(200).json({
+            message: 'Book deleted'
+        })
+    })
+   
+})
 
 
 module.exports = app;

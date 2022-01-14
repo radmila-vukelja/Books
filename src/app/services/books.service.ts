@@ -41,12 +41,24 @@ export class BooksService {
   }
 
   addBook(title: string, author: string, description: string) {
+    //id null - ne unosi ga korisnik, mongo ga generise
     const book: Book = { id: null, title: title, author: author, description: description };
-    this.http.post<{message: string}>("http://localhost:3000/api/books", book)
+    this.http.post<{message: string, bookId: string}>("http://localhost:3000/api/books", book)
     .subscribe((responseData) => {
-      console.log(responseData.message);
+      //kada se pokupe podaci iz baze, uzima se id (ocekuje se da se dobije u  response-u od backenda) i dodeljuje se property-ju id
+      const id = responseData.bookId;
+      book.id = id;
       this.books.push(book);
       this.booksUpdated.next([...this.books]);
     });
+  }
+
+  deleteBook(bookId: string) {
+    this.http.delete("http://localhost:3000/api/books/" + bookId)
+    .subscribe(() => {
+      const updatedBooks = this.books.filter(book => book.id !== bookId);
+      this.books = updatedBooks;
+      this.booksUpdated.next([...this.books]);
+    })
   }
 }

@@ -26,6 +26,10 @@ export class BookListComponent implements OnInit, OnDestroy {
     });
   }
 
+  onDelete(bookId: string) {
+    this.bookService.deleteBook(bookId);
+  }
+
   ngOnDestroy() {
     this.booksSub.unsubscribe();
   }
