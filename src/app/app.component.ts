@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'myBooks';
+  //storedBooks = [];
+
+  onBookAdded(book: string) {
+    //this.storedBooks.push(book);
+  }
 }

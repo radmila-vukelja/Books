@@ -1,0 +1,20 @@
+mat-card {
+    width:20%;
+    margin: 20px;
+    min-width: 150px;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.cardfooter {
+    display: flex;
+    justify-content: end;
+}
+
+.footbutt {
+    margin: 10px;
+}

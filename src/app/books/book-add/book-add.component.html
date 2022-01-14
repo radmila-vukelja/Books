@@ -1,0 +1,41 @@
+<mat-card>
+    <form (submit)="onAddBook(bookForm)" #bookForm="ngForm"> 
+        <mat-form-field>
+            <input matInput type="text" 
+            ngModel
+            name="title"
+            required
+            #title="ngModel"
+            placeholder="Title"
+            >
+            <mat-error *ngIf="title.invalid">Enter title, please</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" 
+            ngModel
+            name="author"
+            required
+            #author="ngModel"
+            placeholder="Author"
+            >
+            <mat-error *ngIf="author.invalid">Enter author, please</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <textarea matInput 
+            rows="5"
+            ngModel
+            name="description"
+            required
+            #description="ngModel"
+            placeholder="Description"
+            >
+            </textarea>
+            <mat-error *ngIf="description.invalid">Enter description, please</mat-error>
+        </mat-form-field>
+        <button mat-raised-button 
+        color="accent"
+        type="submit" 
+        >Save</button>
+    </form>
+</mat-card>
+<hr>

@@ -1,0 +1,17 @@
+<div class="container" *ngIf="books.length > 0">
+<mat-card *ngFor="let book of books">
+    <mat-card-title> {{ book.title }} </mat-card-title>
+    <hr>
+    <mat-card-subtitle> {{ book.author }} </mat-card-subtitle>
+    <mat-card-content>
+        {{ book.description }}
+    </mat-card-content>
+    <div class="cardfooter">
+        <mat-card-footer>
+            <button class="footbutt" mat-raised-button color="accent">Edit</button>
+            <button class="footbutt" mat-raised-button color="primary">Delete</button>
+        </mat-card-footer>
+    </div>
+</mat-card>
+</div>
+<p class="info-text" *ngIf="books.length <= 0">No books</p>
