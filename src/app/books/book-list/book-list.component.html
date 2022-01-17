@@ -1,4 +1,4 @@
-<div class="container" *ngIf="books.length > 0">
+<div class="card-container" *ngIf="books.length > 0">
 <mat-card *ngFor="let book of books">
     <mat-card-title> {{ book.title }} </mat-card-title>
     <hr>
@@ -8,7 +8,7 @@
     </mat-card-content>
     <div class="cardfooter">
         <mat-card-footer>
-            <button class="footbutt" mat-raised-button color="accent">Edit</button>
+            <button class="footbutt" mat-raised-button color="accent" (click)="onEdit(book)">Edit</button>
             <button class="footbutt" mat-raised-button color="primary" (click)="onDelete(book.id)">Delete</button>
         </mat-card-footer>
     </div>

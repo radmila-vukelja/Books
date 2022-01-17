@@ -4,7 +4,7 @@ mat-card {
     min-width: 150px;
 }
 
-.container {
+.card-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -12,9 +12,10 @@ mat-card {
 
 .cardfooter {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
 }
 
 .footbutt {
     margin: 10px;
 }
+

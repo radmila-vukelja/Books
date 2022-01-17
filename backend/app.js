@@ -25,19 +25,6 @@ app.use((req, res, next) => {
     next();
 });
 
-app.post("/api/books", (req, res, next) => {
-    const book = new Book({
-        title: req.body.title,
-        author: req.body.author,
-        description: req.body.description
-    });
-    book.save().then(resultBook => {
-        res.status(201).json({
-            message: 'Book created. All OK',
-            bookId: resultBook._id
-        })
-    });
-});
 
 app.get("/api/books", (req, res, next) => {
     Book.find()
@@ -49,6 +36,67 @@ app.get("/api/books", (req, res, next) => {
     });
     
 });
+
+app.get("/api/books/:id",  (req, res, next) => {
+    Book.findById(req.params.id).then(book => {
+        if(book) {
+            console.log(book)
+            res.status(200).json(book);
+        } else {
+            console.log("Here")
+            res.status(404).json({
+                message: "Book not found!"
+            });
+        }
+    }).catch(error => {
+        console.log(error)
+        res.status(500).json({
+            message: "Getting book failed"
+        });
+    });
+});
+
+
+app.post("/api/books", (req, res, next) => {
+    const book = new Book({
+        title: req.body.title,
+        author: req.body.author,
+        description: req.body.description
+    });
+    book.save();
+    res.status(201).json({
+        message: 'Book created. All OK'
+    })
+});
+
+
+
+app.put("/api/books/:id", (req, res, next) => {
+    const book = new Book({
+        _id: req.body.id,
+        title: req.body.title,
+        author: req.body.author,
+        description: req.body.description
+    });
+    console.log(book)
+    Book.updateOne({
+        _id: req.params.id},
+        book
+    )
+    .then(result => {
+        if(result.modifiedCount){
+            (res.status(200).json({
+                message: "Update successful"
+            }))
+        }
+    })
+    .catch(error => {
+        console.log(error)
+        res.status(500).json({
+            message: "Update failed"
+        })
+    }) 
+}) 
 
 app.delete("/api/books/:id", (req, res, next) => {
     Book.deleteOne({

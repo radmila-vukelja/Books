@@ -1,0 +1,14 @@
+a {
+    text-decoration: none;
+    color: rgb(24, 23, 23);
+    margin: 20px;
+    font-size: medium;
+}
+
+.spacer {
+    flex: auto 1 1;
+}
+
+.title {
+    font-size: x-large;
+}

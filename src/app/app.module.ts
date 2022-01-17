@@ -14,6 +14,9 @@ import { AppComponent } from './app.component';
 import { BookAddComponent } from './books/book-add/book-add.component';
 import { BookListComponent } from './books/book-list/book-list.component';
 import { HeaderComponent } from './header/header.component';
+import { LoginComponent } from './auth/login/login.component';
+import { SignupComponent } from './auth/signup/signup.component';
+import { BookEditComponent } from './books/book-edit/book-edit.component';
 
 
 
@@ -22,7 +25,10 @@ import { HeaderComponent } from './header/header.component';
     AppComponent,
     BookAddComponent,
     BookListComponent,
-    HeaderComponent
+    HeaderComponent,
+    LoginComponent,
+    SignupComponent,
+    BookEditComponent
   ],
   imports: [
     BrowserModule,
