@@ -2,22 +2,30 @@
     display: flex;
     justify-content: center;
 }
-
-mat-card {
+.loginCard {
     width: 60%;
-    margin: 20px;
+    margin: 40px;
 }
 
-mat-form-field {
+.mat-fields {
     width: 100%;
 }
 
-mat-card-header {
+.card-header {
     display: flex;
     justify-content: center;
 }
-
-form {
+.loginForm {
     display: flex;
     flex-direction: column;
+}
+
+.signupRedirect {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.signinButton {
+    width: 100px;
 }

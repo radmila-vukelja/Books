@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 
 
 import { Book } from 'src/app/models/book';
@@ -16,6 +16,7 @@ export class BookListComponent implements OnInit, OnDestroy {
   books: Book[] = [];
   private booksSub!: Subscription;
   selectedBook?: Book;
+  private booksUpdated = new Subject<Book[]>();
 
   constructor(
     public bookService: BooksService,
@@ -37,11 +38,16 @@ export class BookListComponent implements OnInit, OnDestroy {
   }
 
   onDelete(bookId: string) {
-    this.bookService.deleteBook(bookId);
-  }
+    this.bookService.deleteBook(bookId).subscribe(() => {
+      const updatedBooks = this.books.filter(book => book.id !== bookId);
+      this.books = updatedBooks;
+      this.booksUpdated.next([...this.books]);
+  })
+}
 
   ngOnDestroy() {
     this.booksSub.unsubscribe();
   }
 
 }
+

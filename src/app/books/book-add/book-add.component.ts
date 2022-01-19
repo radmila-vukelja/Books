@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { BooksService } from 'src/app/services/books.service';
+import { Book } from 'src/app/models/book';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 
 
@@ -11,13 +14,12 @@ import { BooksService } from 'src/app/services/books.service';
 })
 export class BookAddComponent implements OnInit {
 
-  enteredTitle = "";
-  enteredAuthor = "";
-  enteredDescription = "";
-
+  private books: Book[] = [];
+  private booksUpdated = new Subject<Book[]>();
 
   constructor(
-    public booksService: BooksService
+    public booksService: BooksService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -27,8 +29,16 @@ export class BookAddComponent implements OnInit {
     if(form.invalid){
       return
     }
-    this.booksService.addBook(form.value.title, form.value.author, form.value.description);
-    form.resetForm();
+    const book: Book = { id: null, title: form.value.title, author: form.value.author, description: form.value.description };
+    this.booksService.addBook(book).subscribe((data: { message: any; }) => {
+      console.log(data.message);
+      this.books.push(book);
+      this.booksUpdated.next([...this.books]);
+      this.router.navigateByUrl("");
+    }, error => {
+      console.log("Failed ", error)
+    })
   }
 
 }
+

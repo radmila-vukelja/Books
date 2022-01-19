@@ -1,23 +1,37 @@
 <div class="container">
-    <mat-card>
-        <mat-card-header>
+    <mat-card class="loginCard">
+        <mat-card-header class="card-header">
             <mat-card-title>Log in</mat-card-title>
         </mat-card-header>
-        <hr>
-        <form>
-            <mat-form-field>
+        <hr>                          
+        <form (submit)="onLogin(loginForm)" #loginForm="ngForm" class="loginForm">
+            <mat-form-field class="mat-fields">
                 <input 
+                ngModel
+                name="username"
+                #username="ngModel"
                 matInput
-                placeholder="Username"
+                placeholder="Enter your username"
+                required
                 >
+                <mat-error *ngIf="username.invalid">Enter a valid username, please</mat-error>
             </mat-form-field>
-            <mat-form-field>
-                <input 
+            <mat-form-field class="mat-fields">
+                <input type="password"
                 matInput
-                placeholder="Password"
-                >
+                ngModel
+                name="password"
+                #password="ngModel"
+                required
+                placeholder="Enter your password"
+                > 
+                <mat-error *ngIf="password.invalid">Enter password, please</mat-error>
             </mat-form-field>
-            <button mat-raised-button color="accent">Log In</button>
+            <button mat-raised-button color="accent" type="submit">Log In</button>
         </form>
     </mat-card>
+</div>
+<div class="signupRedirect">
+    <p>Don't have an account?</p> 
+    <button mat-flat-button color="primary" class="signinButton" (click)="signupRedirect()">Sign up!</button>
 </div>

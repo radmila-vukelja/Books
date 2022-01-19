@@ -1,0 +1,22 @@
+.container {
+    display: flex;
+    justify-content: center;
+}
+.signupCard {
+    width: 60%;
+    margin: 20px;
+}
+
+.signFormFields {
+    width: 100%;
+}
+
+.card-header {
+    display: flex;
+    justify-content: center;
+}
+
+.signupForm {
+    display: flex;
+    flex-direction: column;
+}

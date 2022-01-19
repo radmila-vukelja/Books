@@ -1,1 +1,68 @@
-<p>signup works!</p>
+<div class="container">
+    <mat-card class="signupCard">
+        <mat-card-header class="card-header">
+            <mat-card-title>Sign up</mat-card-title>
+        </mat-card-header>
+        <hr>
+        <form (submit)="onSignup(signupForm)" #signupForm="ngForm" class="signupForm">
+            <mat-form-field class="signFormFields">
+                <input 
+                ngModel
+                name="firstName"
+                #firstName="ngModel"
+                matInput
+                placeholder="Enter your first Name"
+                required
+                >
+                <mat-error *ngIf="firstName.invalid">Enter last name, please</mat-error>
+            </mat-form-field>
+            <mat-form-field class="signFormFields"> 
+                <input 
+                ngModel
+                name="lastName"
+                #lastName="ngModel"
+                matInput
+                placeholder="Enter your last Name"
+                required
+                >
+                <mat-error *ngIf="lastName.invalid">Enter last name, please</mat-error>
+            </mat-form-field>
+            <mat-form-field class="signFormFields">
+                <input 
+                type="email"
+                matInput
+                ngModel
+                name="email"
+                #email="ngModel"
+                required
+                placeholder="Enter your e-mail address"
+                >
+                <mat-error *ngIf="email.invalid">Enter valid e-mail, please</mat-error>
+            </mat-form-field>
+            <mat-form-field class="signFormFields">
+                <input 
+                ngModel
+                name="username"
+                #username="ngModel"
+                matInput
+                placeholder="Enter your username"
+                required
+                >
+                <mat-error *ngIf="username.invalid">Enter a valid username, please</mat-error>
+            </mat-form-field>
+            <mat-form-field class="signFormFields">
+                <input 
+                type="password"
+                matInput
+                ngModel
+                name="password"
+                #password="ngModel"
+                required
+                placeholder="Enter your password"
+                >
+                <mat-error *ngIf="password.invalid">Enter password, please</mat-error>
+            </mat-form-field>
+            <button mat-raised-button color="accent">Submit</button>
+        </form>
+    </mat-card>
+</div>
