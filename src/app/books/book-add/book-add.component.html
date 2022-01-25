@@ -22,6 +22,15 @@
             <mat-error *ngIf="author.invalid">Enter author, please</mat-error>
         </mat-form-field>
         <mat-form-field>
+            <mat-label>Book genre</mat-label> 
+            <mat-select [(ngModel)]="selectedValue" #genre="ngModel" name="genre" required>
+                <mat-option *ngFor="let genre of genres" [value]="genre.name" >
+                    {{ genre.name }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="genre.invalid">You must choose a book genre</mat-error>
+        </mat-form-field>
+        <mat-form-field>
             <textarea matInput 
             rows="5"
             ngModel

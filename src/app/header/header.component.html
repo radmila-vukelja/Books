@@ -1,8 +1,18 @@
 <mat-toolbar color="accent">
    <span><a class="title" href="">My Books</a></span> 
-   <a href="add-new">Add New</a>
+   <span *ngIf="getUserRole()">
+      <button mat-button (click)="goToAddNewBook()">Add new book</button>
+   </span>
+   <span *ngIf="getUserRole()">
+      <button mat-button (click)="goToAddNewGenre()">Add new genre</button>
+   </span>
    <span class="spacer"></span>
    <span>
+       <span *ngIf="!checkAuth()">
        <button mat-button (click)="onLogin()">Log in</button>
+       </span>
+       <span *ngIf="checkAuth()">
+        <button mat-button (click)="onLogout()">Log out</button>
+        </span>
    </span>
 </mat-toolbar>

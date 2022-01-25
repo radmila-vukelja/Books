@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.post("", BookController.addNewBook);
 
+router.get("/filtered/:genre", BookController.getBooksByGenre);
+
 router.get("/:id", BookController.getBook);
 
 router.get("", BookController.getBooks);

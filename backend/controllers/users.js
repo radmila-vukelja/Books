@@ -1,6 +1,7 @@
 const User = require('../models/user');
-//const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+require('dotenv').config();
 
 
 exports.signUp = (req, res, next) => {
@@ -11,7 +12,8 @@ exports.signUp = (req, res, next) => {
             lastName: req.body.lastName,
             email: req.body.email,
             username: req.body.username,
-            password: hash
+            password: hash,
+            role: 'guest'
         })
     user.save()
     .then(result => {
@@ -47,9 +49,18 @@ exports.login = (req, res, next) => {
                 message: "Wrong password, bro"
             })
         }
-
-        return res.status(200).json({
-            message: "Logged in!"
+        const token = jwt.sign(
+            {username: fetchedUser.username, userId: fetchedUser._id},
+            "der-sumstuff-secrecy",
+            {expiresIn: "1h"},
+            { role: fetchedUser.role }
+        );
+        console.log(fetchedUser)
+        res.status(200).json({
+            token: token,
+            expiresIn: 3600,
+            userId: fetchedUser._id,
+            role: fetchedUser.role
         })
     }).catch(error => {
         console.log(token)
@@ -59,18 +70,3 @@ exports.login = (req, res, next) => {
     })
 };
 
-/*
- const token = jwt.sign(
-            {
-                username: fetchedUser.username, userId: fetchedUser._id
-            },
-            process.env.JWT_KEY,
-            { expiresIn: "1h"}
-        );
-        res.status(200).json({
-            token: token,
-            expriresIn: 3600,
-            userId: fetchedUser._id
-        })
-
-*/

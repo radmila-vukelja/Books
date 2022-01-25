@@ -1,0 +1,21 @@
+<div class="container">
+    <mat-card>
+        <mat-card-title>Add new genre</mat-card-title>
+        <hr>
+        <form (submit)="onSaveGenre(genreForm)" #genreForm="ngForm" class="formCard">
+            <mat-form-field class="formField">
+                <input matInput
+                ngModel
+                placeholder="Genre name"
+                required
+                name="name"
+                #name="ngModel"
+                >
+                <mat-error *ngIf="name.invalid">Please, enter the genre name</mat-error>
+            </mat-form-field>
+            <mat-card-footer class="cardFooter">
+                <button mat-button type="submit" color="accent">Save</button>
+            </mat-card-footer>
+        </form>
+    </mat-card>
+</div>

@@ -32,7 +32,8 @@ export class SignupComponent implements OnInit {
       lastName: form.value.lastName,
       email: form.value.email,
       username: form.value.username,
-      password: form.value.password
+      password: form.value.password,
+      role: 'guest'
     }
     this.userService.signUp(user)
     .subscribe((data: { message: any }) => {

@@ -5,6 +5,8 @@ import { FormsModule, NgForm, FormControl, FormGroup, Validators } from '@angula
 
 import { Book } from 'src/app/models/book';
 import { BooksService } from 'src/app/services/books.service';
+import { Genre } from 'src/app/models/genre';
+import { map, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-book-edit',
@@ -14,8 +16,12 @@ import { BooksService } from 'src/app/services/books.service';
 export class BookEditComponent implements OnInit {
 
   private bookId!: any;
+  private genresUpdated = new Subject<Genre[]>();
   book!: Book;
   form!: FormGroup
+  genres: Genre[] = [];
+  selectedValue: any;
+  
 
   constructor(
     public route: ActivatedRoute,
@@ -24,27 +30,28 @@ export class BookEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.fetchIdParam();
+    this.fetchBookIdParam();
+    this.getAllBooksGenres();
     this.createBookObj();
     this.populateFormWithBookDetails();
   }
 
   onSaveUpdate(form: NgForm) {
-    const book: Book = { id: this.bookId, title: form.value.title, author: form.value.author, description: form.value.description }
+    const book: Book = { id: this.bookId, title: form.value.title, author: form.value.author, description: form.value.description, genre: form.value.genre }
     this.bookService.updateBook(book).subscribe(
       data => {
         console.log(data)
         this.router.navigateByUrl("");
       }, error => {
         console.log("error: ", error)
-        alert(error)
       }
     )
   }
 
-  fetchIdParam() {
+  fetchBookIdParam() {
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       this.bookId = paramMap.get("bookId");
+      console.log(this.bookId)
       return this.bookId;
     })
   }
@@ -55,7 +62,8 @@ export class BookEditComponent implements OnInit {
         id: bookInfo._id,
         title: bookInfo.title,
         author: bookInfo.author,
-        description: bookInfo.description
+        description: bookInfo.description,
+        genre: bookInfo.genre
       }
     })
   }
@@ -64,36 +72,22 @@ export class BookEditComponent implements OnInit {
     this.form.setValue({
       "title": this.book.title,
       "author": this.book.author,
-      "description": this.book.description
+      "description": this.book.description,
+      "genre": this.book.genre
+    })
+  }
+
+  getAllBooksGenres() {
+    this.bookService.getBookGenres().pipe(map(genreInfo => {
+      return genreInfo.genres.map((genre: { _id: any, name: any }) => {
+        return { id: genre._id, name: genre.name }
+      });
+    }))
+    .subscribe(modGenres => {
+      console.log(this.genres)
+      this.genres = modGenres;
+      this.genresUpdated.next([...this.genres]);
     })
   }
 
 }
-
-    //hvatanje ovog parametra iz url-a treba da se izdvoji u drugu f-ju koja ce se pozvati na ngOnInit
-    //this.route.paramMap.subscribe((paramMap: ParamMap) => {
-     // this.bookId = paramMap.get("bookId");
-     // console.log(this.bookId)
-
-      //this.bookService.getBook(this.bookId).subscribe(bookInfo => {
-
-        //kreiranje objekta takodje treba da se izmesti u drugu f-ju
-        //this.book = {
-        //  id: bookInfo._id,
-        //  title: bookInfo.title,
-        //  author: bookInfo.author,
-        //  description: bookInfo.description
-       // };
-
-
-        //postavljanje vrednosti na formu takodje treba da se izmesti u drugu f-ju
-        //tako ces moci tu f-ju da pozivas vise puta ukoliko to bude bilo potrebno
-        //skoro uvek treba da pravis stvari sa namerom da to moze da se koristi vise puta 
-        //jer ce najverovatnije to biti tako
-        //this.form.setValue({
-        //  "title": this.book.title,
-         // "author": this.book.author,
-         // "description": this.book.description
-      //  })
-      //})
-   // })

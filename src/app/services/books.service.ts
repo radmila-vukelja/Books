@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { Book } from '../models/book';
 import { Form } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Genre } from '../models/genre';
 
 @Injectable({
   providedIn: 'root'
@@ -16,33 +17,27 @@ export class BooksService {
     private http: HttpClient,
     private router: Router
   ) {
-    window.close();
    }
 
   private books: Book[] = [];
   private booksUpdated = new Subject<Book[]>();
+  private genres: Genre[] = [];
+  
 
   getBooks() {
-    this.http.get<{ message: string, books: any }>("http://localhost:3000/api/books")
-      .pipe(map((bookInfo) => {
-        return bookInfo.books.map((book: { title: any; author: any; description: any; _id: any; }) => {
-          return {
-            title: book.title,
-            author: book.author,
-            description: book.description,
-            id: book._id
-          } //pipe map shit = transforming data from DB so
-          // the id would match _id
-        });
-      }))
-      .subscribe((transformedBooks) => {
-        this.books = transformedBooks;
-        this.booksUpdated.next([...this.books]);
-      });
+    return this.http.get<{ message: string, books: any }>("http://localhost:3000/api/books");
+  }
+
+  getBookGenres() {
+    return this.http.get<{message: any, genres: any }>("http://localhost:3000/api/genres");
+  }
+
+  getGenre(id: string) {
+    return this.http.get<{ _id: string, name: string }>("http://localhost:3000/api/genres/" + id);
   }
 
   getBook(id: string) {
-    return this.http.get<{ _id: string, title: string, author: string, description: string }>("http://localhost:3000/api/books/" + id);
+    return this.http.get<{ _id: string, title: string, author: string, description: string, genre: Genre }>("http://localhost:3000/api/books/" + id);
   }
 
   getBookUpdateListener() {
@@ -61,14 +56,12 @@ export class BooksService {
     return this.http.put<Book>("http://localhost:3000/api/books/" + book.id, book);
   }
 
+  saveGenre(genre: Genre) {
+    return this.http.post<{ message: string }>("http://localhost:3000/api/genres", genre.name);
+  }
+
+  getBookByGenre(genre: string) {
+    return this.http.get<{ message: string, books: any }>("http://localhost:3000/api/books/filtered/" + genre);
+  }
+
 }
-
-/*
-    let bookInfo: Book | FormData;
-
-    bookInfo = new FormData();
-    bookInfo.append("id", id);
-    bookInfo.append("title", title);
-    bookInfo.append("author", author);
-    bookInfo.append("description", description);
-    */

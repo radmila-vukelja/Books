@@ -8,6 +8,7 @@ const User = require('./models/user');
 
 const booksRoutes = require('./routes/books');
 const userRoutes = require('./routes/users');
+const genreRoutes = require('./routes/genres');
 
 const app = express();
 
@@ -32,5 +33,6 @@ app.use((req, res, next) => {
 
 app.use("/api/books", booksRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/genres", genreRoutes);
 
 module.exports = app;

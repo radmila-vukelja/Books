@@ -5,7 +5,8 @@ exports.addNewBook = (req, res, next) => {
     const book = new Book({
         title: req.body.title,
         author: req.body.author,
-        description: req.body.description
+        description: req.body.description,
+        genre: req.body.genre
     });
     book.save().then(createdBook => {
         res.status(201).json({
@@ -17,32 +18,29 @@ exports.addNewBook = (req, res, next) => {
         });
     }).catch(error => {
         res.status(500).json({
-            message: "Saving book failed."
+            message: "Saving book failed " + error
         })
     })
 };
 
 
 exports.deleteBook = (req, res, next) => {
-    //console.log("Delete is called")
-    Book.deleteOne({
-        _id: req.params.id
-    })
+    Book.findByIdAndDelete(
+        req.params.id
+    )
     .then(result => {
-        if(result.deletedCount > 0) {
-            console.log(result)
-            res.status(200).json({
-                message: "Post deleted!"
+        if(result.error) {
+            res.status(500).json({
+                message: "Not deleted!"
             });
         } else {
-            console.log(result)
-            res.status(404).json({
-                message: "Not deleted!"
+            res.status(200).json({
+                message: "Book is deleted!"
             });
         }
     }).catch(error => {
         res.status(500).json({
-            message: "Book is not deleted."
+            message: "Book is not deleted." + error
         })
     })
 };
@@ -50,6 +48,7 @@ exports.deleteBook = (req, res, next) => {
 exports.getBook = (req, res, next) => {
     Book.findById(req.params.id)
     .then(book => {
+        console.log(book)
         if(book) {
             res.status(200).json(book)
         } else {
@@ -75,7 +74,23 @@ exports.getBooks = (req, res, next) => {
     })
     .catch(error => {
         res.status(500).json({
-            message: "Books couldn't be fetched"
+            message: "Books couldn't be fetched" + error
+        })
+    })
+};
+
+exports.getBooksByGenre = (req, res, next) => {
+    let fetchedBooks;
+    Book.find({ genre: req.params.genre }).then(documents => {
+        console.log(req.body.genre)
+        fetchedBooks = documents
+        res.status(200).json({
+            message: "Books are filtered",
+            books: fetchedBooks
+        })
+    }).catch(error => {
+        res.status(500).json({
+            message: "Mission failed" + error
         })
     })
 };
@@ -86,24 +101,25 @@ exports.editBook = (req, res, next) => {
         _id: req.body.id,
         title: req.body.title,
         author: req.body.author,
-        description: req.body.description
+        description: req.body.description,
+        genre: req.body.genre
     });
     //update given book with newly created obj
-    Book.updateOne({ _id: req.params.id }, book)
+    Book.findByIdAndUpdate(req.params.id, book)
     .then(result => {
-        if(result.modifiedCount > 0) {
-            res.status(200).json({
-                message: "Book is edited"
+        if(result.error) {
+            res.status(404).json({
+                message: "Book changes couldn't be saved"  
             })
         } else {
-            res.status(404).json({
-                message: "Book changes couldn't be saved"
+            res.status(200).json({
+                message: "Book is edited"
             })
         }
     })
     .catch(error => {
         res.status(500).json({
-            message:"Editing failed."
+            message:"Editing failed." + error
         })
     })
 

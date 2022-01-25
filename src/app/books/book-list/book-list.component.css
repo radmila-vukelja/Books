@@ -4,7 +4,13 @@ mat-card {
     min-width: 150px;
 }
 
-.card-container {
+.cards-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.one-card-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -19,3 +25,38 @@ mat-card {
     margin: 10px;
 }
 
+.filter-field {
+    /*background-color: darkseagreen;*/
+    width: 80%;
+    padding-top: 20px;
+
+}
+
+.filter-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(84, 87, 87);
+}
+
+.title {
+    height: 45px;
+}
+
+.content { 
+    height: 80px;
+}
+
+.genre {
+    margin-bottom: 10%;
+}
+
+.apply-filter {
+    height: 50%;
+    margin-left: 10px;
+}
+
+.clear-button {
+    margin-left: 10px;
+}

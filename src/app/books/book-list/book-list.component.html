@@ -1,17 +1,38 @@
-<div class="card-container" *ngIf="books.length > 0">
-<mat-card *ngFor="let book of books">
-    <mat-card-title> {{ book.title }} </mat-card-title>
-    <hr>
-    <mat-card-subtitle> {{ book.author }} </mat-card-subtitle>
-    <mat-card-content>
-        {{ book.description }}
-    </mat-card-content>
-    <div class="cardfooter">
-        <mat-card-footer>
-            <button class="footbutt" mat-raised-button color="accent" (click)="onEdit(book)">Edit</button>
-            <button class="footbutt" mat-raised-button color="primary" (click)="onDelete(book.id)">Delete</button>
-        </mat-card-footer>
-    </div>
-</mat-card>
+<div class="filter-container">
+    <mat-form-field appearance="fill" class="filter-field" color="accent">
+        <mat-label>Filter: genre</mat-label>
+        <mat-select [(ngModel)]="selectedValue" name="filter" #filter="ngModel">
+            <mat-option *ngFor="let genre of genres" [value]="genre.name">
+                {{ genre.name }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button mat-button color="accent" class="clear-button" (click)="onClear()">
+        <mat-icon>clear</mat-icon>
+    </button>
+    <button mat-button class="apply-filter" color="accent" (click)="filterBooks(selectedValue)">Apply</button>
+</div>
+<div class="cards-container" *ngIf="books.length > 0">
+        <mat-card  *ngFor="let book of books">
+            <mat-card-title class="title"> {{ book.title }} </mat-card-title>
+            <hr>
+            <mat-card-subtitle> {{ book.author }} </mat-card-subtitle>
+            <mat-card-content class="content">
+                {{ book.description }}
+            </mat-card-content>
+            <div class="genre">
+                {{ book.genre }}
+            </div>
+            <mat-card-footer>
+                <span *ngIf="getUserRole()">
+                    <button class="footbutt" mat-raised-button color="accent" (click)="onEdit(book)">Edit</button>
+                </span>
+                <span *ngIf="getUserRole()">
+                    <button class="footbutt" mat-raised-button color="primary"
+                        (click)="onDelete(book.id)">Delete</button>
+                </span>
+            </mat-card-footer>
+        </mat-card>
 </div>
 <p class="info-text" *ngIf="books.length <= 0">No books</p>
+

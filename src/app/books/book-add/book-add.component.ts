@@ -3,8 +3,9 @@ import { NgForm } from '@angular/forms';
 import { BooksService } from 'src/app/services/books.service';
 import { Book } from 'src/app/models/book';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { map, Subject } from 'rxjs';
 
+import { Genre } from 'src/app/models/genre';
 
 
 @Component({
@@ -16,6 +17,9 @@ export class BookAddComponent implements OnInit {
 
   private books: Book[] = [];
   private booksUpdated = new Subject<Book[]>();
+  genres: Genre[] = [];
+  selectedValue: any;
+  private genresUpdated = new Subject<Genre[]>();
 
   constructor(
     public booksService: BooksService,
@@ -23,13 +27,14 @@ export class BookAddComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getAllBooksGenres();
   }
 
+
+
   onAddBook(form: NgForm) {
-    if(form.invalid){
-      return
-    }
-    const book: Book = { id: null, title: form.value.title, author: form.value.author, description: form.value.description };
+
+    const book: Book = { id: null, title: form.value.title, author: form.value.author, description: form.value.description, genre: form.value.genre };
     this.booksService.addBook(book).subscribe((data: { message: any; }) => {
       console.log(data.message);
       this.books.push(book);
@@ -39,6 +44,21 @@ export class BookAddComponent implements OnInit {
       console.log("Failed ", error)
     })
   }
+
+  getAllBooksGenres() {
+    this.booksService.getBookGenres().pipe(map(genreInfo => {
+      return genreInfo.genres.map((genre: { _id: any, name: any }) => {
+        return { id: genre._id, name: genre.name }
+      });
+    }))
+      .subscribe(modGenres => {
+        this.genres = modGenres;
+        this.genresUpdated.next([...this.genres]);
+      })
+  }
+
+
+
 
 }
 
